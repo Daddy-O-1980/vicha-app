@@ -36,8 +36,11 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
-    const result = data.candidates?.[0]?.content?.parts?.[0]?.text || "ไม่สามารถวิเคราะห์ได้";
-    res.status(200).json({ result });
+    const result = data.candidates?.[0]?.content?.parts?.[0]?.text;
+if (!result) {
+  return res.status(200).json({ result: JSON.stringify(data) });
+}
+res.status(200).json({ result });
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
